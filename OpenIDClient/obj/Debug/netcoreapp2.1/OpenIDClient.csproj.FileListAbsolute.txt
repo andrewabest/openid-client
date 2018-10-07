@@ -1,0 +1,14 @@
+C:\projects\OpenIDClient\OpenIDClient\bin\Debug\netcoreapp2.1\OpenIDClient.deps.json
+C:\projects\OpenIDClient\OpenIDClient\bin\Debug\netcoreapp2.1\OpenIDClient.runtimeconfig.json
+C:\projects\OpenIDClient\OpenIDClient\bin\Debug\netcoreapp2.1\OpenIDClient.runtimeconfig.dev.json
+C:\projects\OpenIDClient\OpenIDClient\bin\Debug\netcoreapp2.1\OpenIDClient.dll
+C:\projects\OpenIDClient\OpenIDClient\obj\Debug\netcoreapp2.1\OpenIDClient.csprojAssemblyReference.cache
+C:\projects\OpenIDClient\OpenIDClient\obj\Debug\netcoreapp2.1\OpenIDClient.csproj.CoreCompileInputs.cache
+C:\projects\OpenIDClient\OpenIDClient\obj\Debug\netcoreapp2.1\OpenIDClient.AssemblyInfoInputs.cache
+C:\projects\OpenIDClient\OpenIDClient\obj\Debug\netcoreapp2.1\OpenIDClient.AssemblyInfo.cs
+C:\projects\OpenIDClient\OpenIDClient\bin\Debug\netcoreapp2.1\OpenIDClient.pdb
+C:\projects\OpenIDClient\OpenIDClient\obj\Debug\netcoreapp2.1\OpenIDClient.dll
+C:\projects\OpenIDClient\OpenIDClient\obj\Debug\netcoreapp2.1\OpenIDClient.pdb
+C:\projects\OpenIdClient\OpenIDClient\obj\Debug\netcoreapp2.1\OpenIDClient.RazorAssemblyInfo.cache
+C:\projects\OpenIdClient\OpenIDClient\obj\Debug\netcoreapp2.1\OpenIDClient.RazorAssemblyInfo.cs
+C:\projects\OpenIdClient\OpenIDClient\obj\Debug\netcoreapp2.1\OpenIDClient.RazorTargetAssemblyInfo.cache
