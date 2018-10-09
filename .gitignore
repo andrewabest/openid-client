@@ -1,6 +1,6 @@
-/LocalDevIdentityServer*/obj/*
-/LocalDevIdentityServer*/bin/*
+**/obj/*
+**/bin/*
 *.DotSettings.user
 **/.vs/*
-/**/*.user
-/.vscode/**
+**/*.user
+.vscode/**

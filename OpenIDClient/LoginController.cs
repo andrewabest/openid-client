@@ -39,10 +39,13 @@ namespace OpenIDClient
     {
         public string Code { get; set; }
         public string Scope { get; set; }
+        [FromQuery(Name = "session_state")]
         public string SessionState { get; set; }
-
         public string Error { get; set; }
+        [FromQuery(Name = "error_description")]
         public string ErrorDescription { get; set; }
+        [FromQuery(Name = "error_uri")]
         public string ErrorUri { get; set; }
+        public string State { get; set; }
     }
 }
