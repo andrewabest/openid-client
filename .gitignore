@@ -4,3 +4,7 @@
 **/.vs/*
 **/*.user
 .vscode/**
+**/bin/*
+**/obj/*
+*/bin/*
+*/obj/*
