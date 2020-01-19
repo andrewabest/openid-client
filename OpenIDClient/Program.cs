@@ -1,6 +1,7 @@
 ﻿using System;
 using System.IO;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.Hosting;
 using Serilog;
 using Serilog.Events;
 using Serilog.Sinks.SystemConsole.Themes;
@@ -19,15 +20,15 @@ namespace OpenIDClient
                 .WriteTo.Console(theme: AnsiConsoleTheme.Code)
                 .CreateLogger();
 
-            var host = new WebHostBuilder()
-                .UseKestrel()
-                .UseUrls("https://*:8090")
-                .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseStartup<Startup>()
-                .UseSerilog()
-                .Build();
-
-            host.Run();
+            Host.CreateDefaultBuilder(args)
+                .ConfigureWebHostDefaults(builder =>
+                {
+                    builder.UseUrls("https://*:8090");
+                    builder.UseStartup<Startup>();
+                    builder.UseSerilog();
+                })
+                .Build()
+                .Run();
         }
     }
 }
