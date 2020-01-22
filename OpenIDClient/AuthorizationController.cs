@@ -64,7 +64,12 @@ namespace OpenIDClient
             // 3.1.3.7.  ID Token Validation
             // https://openid.net/specs/openid-connect-core-1_0.html#IDTokenValidation
             var idTokenValidationResult = await ValidateIdToken(tokenResponse.IdToken);
-            if (idTokenValidationResult.Succeeded == false)
+
+            // 3.1.3.8.  Access Token Validation
+            // https://openid.net/specs/openid-connect-core-1_0.html#CodeFlowTokenValidation
+            var accessTokenValidationResult = ValidateAccessToken(tokenResponse.IdToken, tokenResponse.AccessToken);
+
+            if (idTokenValidationResult.Succeeded == false || accessTokenValidationResult.Succeeded == false)
             {
                 return ValidationProblem();
             }
@@ -84,7 +89,7 @@ namespace OpenIDClient
         // 3.1.3.7.  ID Token Validation - 6
         // The Client MUST validate the signature of all other ID Tokens according to JWS [JWS] using the algorithm specified in the JWT alg Header Parameter.
         // The Client MUST use the keys provided by the Issuer
-        private async Task<TokenValidationResult> ValidateIdToken(string encodedToken)
+        private async Task<TokenValidationResult> ValidateIdToken(string idToken)
         {
             try
             {
@@ -93,9 +98,9 @@ namespace OpenIDClient
                 // JWT Structure https://tools.ietf.org/html/rfc7519#section-3
                 // We are working with JWS, not JWE.
 
-                var rawHeader = DecodeSegment(encodedToken, TokenSegments.Header);
-                var rawBody = DecodeSegment(encodedToken, TokenSegments.Body);
-                var rawSignature = WebEncoders.Base64UrlDecode(encodedToken.Split('.')[(int)TokenSegments.Signature]);
+                var rawHeader = DecodeSegment(idToken, TokenSegments.Header);
+                var rawBody = DecodeSegment(idToken, TokenSegments.Body);
+                var rawSignature = WebEncoders.Base64UrlDecode(idToken.Split('.')[(int)TokenSegments.Signature]);
                 var header = JsonConvert.DeserializeObject<JwtHeader>(rawHeader, Converter.Settings);
                 var body = JsonConvert.DeserializeObject<JwtBody>(rawBody, Converter.Settings);
 
@@ -134,11 +139,12 @@ namespace OpenIDClient
 
                 var hash = SHA256.Create().ComputeHash(canonicalPayload);
 
+                // https://tools.ietf.org/html/rfc3447#section-8.2.1
                 var result = rsa.VerifyHash(hash, rawSignature, HashAlgorithmName.SHA256, RSASignaturePadding.Pkcs1);
                     
                 if (!result) throw new InvalidOperationException("The supplied signature does not match the calculated signature");
 
-                if (DateTimeOffset.FromUnixTimeSeconds(body.Exp).AddHours(1) < DateTimeOffset.UtcNow)
+                if (DateTimeOffset.FromUnixTimeSeconds(body.Exp) <= DateTimeOffset.UtcNow)
                 {
                     throw new InvalidOperationException("Token has expired");
                 }
@@ -149,6 +155,23 @@ namespace OpenIDClient
             {
                 return new TokenValidationResult {Message = "Token validation failed"};
             }
+        }
+
+        // 3.1.3.8.  Access Token Validation
+        // 3.2.2.9.  Access Token Validation
+        // https://openid.net/specs/openid-connect-core-1_0.html#ImplicitTokenValidation
+        private static TokenValidationResult ValidateAccessToken(string idToken, string accessToken)
+        {
+            var rawBody = DecodeSegment(idToken, TokenSegments.Body);
+            var body = JsonConvert.DeserializeObject<JwtBody>(rawBody, Converter.Settings);
+
+            var octets = Encoding.ASCII.GetBytes(accessToken);
+            var hash = SHA256.Create().ComputeHash(octets);
+            var encoded = WebEncoders.Base64UrlEncode(hash[..(hash.Length / 2)]);
+
+            if (encoded.Equals(body.AtHash) == false) throw new InvalidOperationException("The supplied signature does not match the calculated signature");
+
+            return new TokenValidationResult { Succeeded = true };
         }
 
         private static string DecodeSegment(string token, TokenSegments desiredSegment)
