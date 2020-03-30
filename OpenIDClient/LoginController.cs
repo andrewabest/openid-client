@@ -12,7 +12,7 @@ namespace OpenIDClient
         public IActionResult Login()
         {
             // 3.1.2.  Authorization Endpoint
-            const string authorizationEndpoint = "http://localhost:8080/connect/authorize";
+            const string authorizationEndpoint = "https://localhost:8080/connect/authorize";
 	
             // 3.1.2.1.  Authentication Request
             var requestContent = 

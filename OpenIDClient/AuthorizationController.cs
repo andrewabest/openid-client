@@ -31,7 +31,7 @@ namespace OpenIDClient
             }
 
             // 3.1.3.  Token Endpoint
-            const string tokenEndpoint = "http://localhost:8080/connect/token";
+            const string tokenEndpoint = "https://localhost:8080/connect/token";
 
             // 3.1.3.1.  Token Request
             var requestContent = new List<KeyValuePair<string, string>>()
@@ -106,7 +106,7 @@ namespace OpenIDClient
 
                 // https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderMetadata
                 // https://openid.net/specs/openid-connect-discovery-1_0.html#ProviderConfig
-                const string introspectionEndpoint = "http://localhost:8080/.well-known/openid-configuration";
+                const string introspectionEndpoint = "https://localhost:8080/.well-known/openid-configuration";
                 var configurationJson = await new HttpClient().GetStringAsync(introspectionEndpoint);
                 var configuration =
                     JsonConvert.DeserializeObject<OpenIDConfiguration>(configurationJson, Converter.Settings);
